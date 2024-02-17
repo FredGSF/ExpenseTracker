@@ -1,11 +1,25 @@
-from django.shortcuts import render, redirect
+import pandas as pd
+from django.shortcuts import render
 from .models import Expense
-from .forms import ExpenseForm
 
 
 def expense_list(request):
     expenses = Expense.objects.all()
-    return render(request, "expenses/expense_list.html", {"expenses": expenses})
+
+    # Use pandas to analyze data
+    df = pd.DataFrame(list(expenses.values()))
+    total_expenses_per_category = (
+        df.groupby("category_id")["amount"].sum().reset_index()
+    )
+
+    return render(
+        request,
+        "expenses/expense_list.html",
+        {
+            "expenses": expenses,
+            "total_expenses_per_category": total_expenses_per_category,
+        },
+    )
 
 
 def add_expense(request):
