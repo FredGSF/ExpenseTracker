@@ -14,7 +14,7 @@ class ExpenseInputFrame:
 
     def create_input_frame(self):
         self.frame_input = ttk.Frame(self.parent)
-        self.frame_input.grid(row=0, column=0, padx=10, pady=10, sticky=tk.W)
+        self.frame_input.grid(row=0, column=0, padx=60, pady=20, sticky=tk.W)
 
         self.label_category = ttk.Label(self.frame_input, text="Category:")
         self.entry_category = ttk.Entry(self.frame_input)
