@@ -59,8 +59,34 @@ class ExpenseListbox:
         button_save.grid(row=2, column=0, columnspan=2, pady=10)
 
     def save_changes(self, edit_window, expense_id, new_category, new_amount):
-        # Implement save_changes logic here
-        pass
+    try:
+        new_amount = float(new_amount)
+        if new_amount <= 0:
+            raise ValueError("Amount must be a positive number.")
+    except ValueError as e:
+        self.show_error_message(str(e))
+        return
 
+    updated_expense = {
+        "category": new_category,
+        "amount": new_amount,
+        "timestamp": datetime.datetime.now(),
+    }
+
+    # Update expense in MongoDB
+    result = self.expenses_collection.update_one(
+        {"_id": expense_id}, {"$set": updated_expense}
+    )
+
+    if result.modified_count == 1:
+        # Update the Listbox
+        self.update_listbox_callback()
+        # Close the edit window
+        edit_window.destroy()
+    else:
+        self.show_error_message("Failed to save changes.")
+
+def show_error_message(self, message):
+    messagebox.showerror("Error", message)
     def show_info_message(self, message):
         messagebox.showinfo("Info", message)
