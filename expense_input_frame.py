@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import datetime
 
 
 class ExpenseInputFrame:
-    def __init__(self, parent, add_expense_callback, update_listbox_callback):
+    def __init__(
+        self, parent, add_expense_callback, update_listbox_callback, expenses_collection
+    ):
         self.parent = parent
         self.add_expense_callback = add_expense_callback
         self.update_listbox_callback = update_listbox_callback
+        self.expenses_collection = expenses_collection
         self.create_input_frame()
 
     def create_input_frame(self):
