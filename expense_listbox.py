@@ -22,7 +22,7 @@ class ExpenseListbox:
 
     def create_expenses_listbox(self):
         self.listbox_expenses = tk.Listbox(self.parent)
-        self.listbox_expenses.grid(row=1, column=0, padx=10, pady=10, sticky=tk.W)
+        self.listbox_expenses.grid(row=1, column=0, padx=30, pady=30, sticky=tk.W)
 
     def delete_expense(self):
         selected_index = self.listbox_expenses.curselection()
