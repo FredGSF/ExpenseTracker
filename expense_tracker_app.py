@@ -19,12 +19,18 @@ class ExpenseTrackerApp:
         self.expenses_collection = self.database["expenses"]
 
     def create_widgets(self):
-        ExpenseInputFrame(self.root, self.add_expense, self.update_expense_listbox)
+        ExpenseInputFrame(
+            self.root,
+            self.add_expense,
+            self.update_expense_listbox,
+            self.expenses_collection,
+        )
         ExpenseListbox(
             self.root,
             self.delete_expense,
             self.edit_expense,
             self.update_expense_listbox,
+            self.expenses_collection,
         )
 
     def add_expense(self, category, amount):
@@ -94,14 +100,15 @@ class ExpenseTrackerApp:
 
     def update_expense_listbox(self):
         # Retrieve expenses from MongoDB and update the Listbox
-        self.listbox_expenses.delete(0, tk.END)
-        for expense in self.expenses_collection.find():
-            display_text = (
-                f"{expense.get('category', '')}: ${expense.get('amount', 0):.2f}"
-            )
-            if "timestamp" in expense:
-                display_text += f" - {expense['timestamp']}"
-            self.listbox_expenses.insert(tk.END, display_text)
+        # Here you need to call the update_listbox method of the ExpenseListbox instance.
+        pass  # Implement this part based on your code structure
+
+    def clear_entry_fields(self):
+        # You need to implement this method based on your code structure.
+        pass
+
+    def show_error_message(self, message):
+        messagebox.showerror("Error", message)
 
     def close_app(self):
         self.client.close()
@@ -110,3 +117,9 @@ class ExpenseTrackerApp:
     def run(self):
         self.root.protocol("WM_DELETE_WINDOW", self.close_app)
         self.root.mainloop()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ExpenseTrackerApp(root)
+    app.run()
