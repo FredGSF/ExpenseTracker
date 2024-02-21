@@ -1,14 +1,24 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import datetime
 
 
 class ExpenseListbox:
-    def __init__(self, parent, delete_callback, edit_callback, update_listbox_callback):
+    def __init__(
+        self,
+        parent,
+        delete_callback,
+        edit_callback,
+        update_listbox_callback,
+        expenses_collection,
+    ):
         self.parent = parent
         self.delete_callback = delete_callback
         self.edit_callback = edit_callback
         self.update_listbox_callback = update_listbox_callback
+        self.expenses_collection = expenses_collection
         self.create_expenses_listbox()
+        self.update_listbox()
 
     def create_expenses_listbox(self):
         self.listbox_expenses = tk.Listbox(self.parent)
@@ -59,34 +69,52 @@ class ExpenseListbox:
         button_save.grid(row=2, column=0, columnspan=2, pady=10)
 
     def save_changes(self, edit_window, expense_id, new_category, new_amount):
-    try:
-        new_amount = float(new_amount)
-        if new_amount <= 0:
-            raise ValueError("Amount must be a positive number.")
-    except ValueError as e:
-        self.show_error_message(str(e))
-        return
+        try:
+            new_amount = float(new_amount)
+            if new_amount <= 0:
+                raise ValueError("Amount must be a positive number.")
+        except ValueError as e:
+            self.show_error_message(str(e))
+            return
 
-    updated_expense = {
-        "category": new_category,
-        "amount": new_amount,
-        "timestamp": datetime.datetime.now(),
-    }
+        updated_expense = {
+            "category": new_category,
+            "amount": new_amount,
+            "timestamp": datetime.datetime.now(),
+        }
 
-    # Update expense in MongoDB
-    result = self.expenses_collection.update_one(
-        {"_id": expense_id}, {"$set": updated_expense}
-    )
+        # Update expense in MongoDB
+        result = self.expenses_collection.update_one(
+            {"_id": expense_id}, {"$set": updated_expense}
+        )
 
-    if result.modified_count == 1:
-        # Update the Listbox
-        self.update_listbox_callback()
-        # Close the edit window
-        edit_window.destroy()
-    else:
-        self.show_error_message("Failed to save changes.")
+        if result.modified_count == 1:
+            # Update the Listbox
+            self.update_listbox_callback()
+            # Close the edit window
+            edit_window.destroy()
+        else:
+            self.show_error_message("Failed to save changes.")
 
-def show_error_message(self, message):
-    messagebox.showerror("Error", message)
+    def show_error_message(self, message):
+        messagebox.showerror("Error", message)
+
     def show_info_message(self, message):
         messagebox.showinfo("Info", message)
+
+    def update_listbox(self):
+        # Retrieve expenses from MongoDB and update the Listbox
+        self.listbox_expenses.delete(0, tk.END)
+        for expense in self.expenses_collection.find():
+            display_text = (
+                f"{expense.get('category', '')}: ${expense.get('amount', 0):.2f}"
+            )
+            if "timestamp" in expense:
+                display_text += f" - {expense['timestamp']}"
+            self.listbox_expenses.insert(tk.END, display_text)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    listbox = ExpenseListbox(root, None, None, None, None)
+    root.mainloop()
