@@ -5,26 +5,32 @@ import datetime
 from expense_listbox import ExpenseListbox
 from expense_input_frame import ExpenseInputFrame
 
-
+# Creating a class for the Expense Tracker App
 class ExpenseTrackerApp:
     def __init__(self, root):
+        # Initializing the main window and setting its title
         self.root = root
         self.root.title("Expense Tracker")
+        # Connecting to MongoDB and creating widgets
         self.connect_to_mongodb()
         self.create_widgets()
-
+        
+    # Method to connect to MongoDB
     def connect_to_mongodb(self):
         self.client = pymongo.MongoClient("mongodb://localhost:27017/")
         self.database = self.client["expense_tracker_db"]
         self.expenses_collection = self.database["expenses"]
 
+    # Method to create widgets (input frame and listbox)
     def create_widgets(self):
+        # Creating and initializing ExpenseInputFrame
         ExpenseInputFrame(
             self.root,
             self.add_expense,
             self.update_expense_listbox,
             self.expenses_collection,
         )
+        # Creating and initializing ExpenseListbox
         ExpenseListbox(
             self.root,
             self.delete_expense,
@@ -32,7 +38,7 @@ class ExpenseTrackerApp:
             self.update_expense_listbox,
             self.expenses_collection,
         )
-
+    # Method to add an expense to MongoDB and update the Listbox
     def add_expense(self, category, amount):
         try:
             amount = float(amount)
@@ -99,26 +105,32 @@ class ExpenseTrackerApp:
             self.show_error_message("Failed to edit expense.")
 
     def update_expense_listbox(self):
+        #todo
         # Retrieve expenses from MongoDB and update the Listbox
         # Here you need to call the update_listbox method of the ExpenseListbox instance.
-        pass  # Implement this part based on your code structure
+        pass  # need to implement
 
     def clear_entry_fields(self):
-        # You need to implement this method based on your code structure.
+        # ToDo
+        #need to implement
         pass
-
+        
+    # Method to display an error message using a tkinter messagebox
     def show_error_message(self, message):
         messagebox.showerror("Error", message)
 
+    # Method to close the MongoDB connection and destroy the main window
     def close_app(self):
         self.client.close()
         self.root.destroy()
-
+        
+    # Method to run the application
     def run(self):
+        # Set a protocol to handle window close event and start the main loop
         self.root.protocol("WM_DELETE_WINDOW", self.close_app)
         self.root.mainloop()
 
-
+# Main block to create a tkinter root window and instantiate the ExpenseTrackerApp
 if __name__ == "__main__":
     root = tk.Tk()
     app = ExpenseTrackerApp(root)
