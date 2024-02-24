@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+
 # Creating a class for the Expense Input Frame
 class ExpenseInputFrame:
     def __init__(
@@ -12,8 +13,8 @@ class ExpenseInputFrame:
         self.update_listbox_callback = update_listbox_callback
         self.expenses_collection = expenses_collection
         self.create_input_frame()
-        
-     # Method to create the input frame with labels, entry fields, and a button
+
+    # Method to create the input frame with labels, entry fields, and a button
     def create_input_frame(self):
         # Creating a ttk frame within the specified parent
         self.frame_input = ttk.Frame(self.parent)
@@ -34,7 +35,7 @@ class ExpenseInputFrame:
         self.label_amount.grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
         self.entry_amount.grid(row=1, column=1, padx=5, pady=5)
         self.button_add_expense.grid(row=2, column=0, columnspan=2, pady=10)
-        
+
     # Method to handle adding an expense when the button is clicked
     def add_expense(self):
         # Retrieving category and amount from entry fields
@@ -51,13 +52,14 @@ class ExpenseInputFrame:
         # Calling the provided callback functions to add the expense and update the listbox
         self.add_expense_callback(category, amount)
         self.update_listbox_callback()
-         # Clearing the entry fields after successfully adding an expense
+        # Clearing the entry fields after successfully adding an expense
         self.clear_entry_fields()
 
     # Method to clear the entry fields (category and amount)
     def clear_entry_fields(self):
         self.entry_category.delete(0, tk.END)
         self.entry_amount.delete(0, tk.END)
-     # Method to display an error message using a tkinter messagebox
+
+    # Method to display an error message using a tkinter messagebox
     def show_error_message(self, message):
         messagebox.showerror("Error", message)
