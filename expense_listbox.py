@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import datetime
 
+
 # Creating a class for the Expense Listbox
 class ExpenseListbox:
     def __init__(
@@ -20,11 +21,13 @@ class ExpenseListbox:
         self.expenses_collection = expenses_collection
         self.create_expenses_listbox()
         self.update_listbox()
+
     # Method to create the expenses listbox
     def create_expenses_listbox(self):
         # Creating a tkinter Listbox within the specified parent
         self.listbox_expenses = tk.Listbox(self.parent)
         self.listbox_expenses.grid(row=1, column=0, padx=30, pady=30, sticky=tk.W)
+
     # Method to delete the selected expense
     def delete_expense(self):
         selected_index = self.listbox_expenses.curselection()
@@ -38,6 +41,7 @@ class ExpenseListbox:
         # Calling the provided delete callback and updating the listbox
         self.delete_callback(expense_id)
         self.update_listbox_callback()
+
     # Method to edit the selected expense
     def edit_expense(self):
         # Getting the selected index from the listbox
@@ -46,7 +50,7 @@ class ExpenseListbox:
             # Displaying an info message if no expense is selected
             self.show_info_message("Please select an expense to edit.")
             return
-            
+
         # Retrieving the expense ID and details from MongoDB based on the selected index
         expense_id = self.expenses_collection.find()[selected_index[0]]["_id"]
         selected_expense = self.expenses_collection.find_one({"_id": expense_id})
@@ -54,7 +58,7 @@ class ExpenseListbox:
         # Create a new window for editing
         edit_window = tk.Toplevel(self.parent)
         edit_window.title("Edit Expense")
-        
+
         # Creating labels and entry fields for category and amount in the edit window
         label_category = ttk.Label(edit_window, text="Category:")
         entry_category = ttk.Entry(edit_window)
@@ -77,6 +81,7 @@ class ExpenseListbox:
             ),
         )
         button_save.grid(row=2, column=0, columnspan=2, pady=10)
+
     # Method to save changes made in the edit window
     def save_changes(self, edit_window, expense_id, new_category, new_amount):
         # Validating the new amount as a positive float
@@ -87,7 +92,7 @@ class ExpenseListbox:
         except ValueError as e:
             self.show_error_message(str(e))
             return
-     # Creating an updated expense dictionary with new values and timestamp
+        # Creating an updated expense dictionary with new values and timestamp
         updated_expense = {
             "category": new_category,
             "amount": new_amount,
@@ -107,12 +112,15 @@ class ExpenseListbox:
         else:
             # Displaying an error message if the update fails
             self.show_error_message("Failed to save changes.")
+
     # Method to display an error message using a tkinter messagebox
     def show_error_message(self, message):
         messagebox.showerror("Error", message)
+
     # Method to display an info message using a tkinter messagebox
     def show_info_message(self, message):
         messagebox.showinfo("Info", message)
+
     # Method to update the Listbox with the latest data from MongoDB
     def update_listbox(self):
         # Retrieve expenses from MongoDB and update the Listbox
@@ -124,6 +132,7 @@ class ExpenseListbox:
             if "timestamp" in expense:
                 display_text += f" - {expense['timestamp']}"
             self.listbox_expenses.insert(tk.END, display_text)
+
 
 # Main block to create a tkinter root window and instantiate the ExpenseListbox
 if __name__ == "__main__":
