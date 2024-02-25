@@ -24,21 +24,33 @@ class ExpenseTrackerApp:
 
     # Method to create widgets (input frame and listbox)
     def create_widgets(self):
-        # Creating and initializing ExpenseInputFrame
+        # Create and configure the main frame
+        main_frame = ttk.Frame(self.root, padding=(20, 10))
+        main_frame.grid(row=0, column=0, sticky="nsew")
+
+        # Create and initialize ExpenseInputFrame
         input_frame = ExpenseInputFrame(
-            self.root,
+            main_frame,
             self.add_expense,
             self.update_expense_listbox,
             self.expenses_collection,
         )
 
-        # Creating and initializing ExpenseListbox
+        # Create and initialize ExpenseListbox
+        listbox_frame = ttk.Frame(main_frame)
+        listbox_frame.grid(row=1, column=0, pady=(20, 0))
+
         self.listbox = ExpenseListbox(
-            self.root,
+            listbox_frame,
             self.delete_expense,
             self.edit_expense,
             self.update_expense_listbox,
             self.expenses_collection,
+        )
+
+        # Add some padding to the buttons for better spacing
+        ttk.Button(main_frame, text="Quit", command=self.close_app).grid(
+            row=2, column=0, pady=(20, 0)
         )
 
     # Method to add an expense to MongoDB and update the Listbox
