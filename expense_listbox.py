@@ -23,10 +23,17 @@ class ExpenseListbox:
         self.update_listbox()
 
     # Method to create the expenses listbox
+
+    # Method to create the expenses listbox
     def create_expenses_listbox(self):
         # Creating a tkinter Listbox within the specified parent
         self.listbox_expenses = tk.Listbox(self.parent)
-        self.listbox_expenses.grid(row=1, column=0, padx=30, pady=30, sticky=tk.W)
+        self.listbox_expenses.grid(row=1, column=0, padx=10, pady=10, sticky=tk.W)
+
+        # Adding a scrollbar for better navigation
+        scrollbar = tk.Scrollbar(self.parent, command=self.listbox_expenses.yview)
+        scrollbar.grid(row=1, column=1, sticky="nsew")
+        self.listbox_expenses.config(yscrollcommand=scrollbar.set)
 
     # Method to delete the selected expense
     def delete_expense(self):
