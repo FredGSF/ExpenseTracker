@@ -25,14 +25,15 @@ class ExpenseTrackerApp:
     # Method to create widgets (input frame and listbox)
     def create_widgets(self):
         # Creating and initializing ExpenseInputFrame
-        ExpenseInputFrame(
+        input_frame = ExpenseInputFrame(
             self.root,
             self.add_expense,
             self.update_expense_listbox,
             self.expenses_collection,
         )
+
         # Creating and initializing ExpenseListbox
-        ExpenseListbox(
+        self.listbox = ExpenseListbox(
             self.root,
             self.delete_expense,
             self.edit_expense,
@@ -107,10 +108,8 @@ class ExpenseTrackerApp:
             self.show_error_message("Failed to edit expense.")
 
     def update_expense_listbox(self):
-        # todo
         # Retrieve expenses from MongoDB and update the Listbox
-        # Here you need to call the update_listbox method of the ExpenseListbox instance.
-        pass  # need to implement
+        self.listbox.update_listbox()
 
     def clear_entry_fields(self):
         # ToDo
