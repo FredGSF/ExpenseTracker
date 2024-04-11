@@ -41,6 +41,8 @@ The project is organized into the following modules:
 
 ## Contributions
 
+pr1
+
 Contributions are welcome! Feel free to fork the repository, make improvements, and submit pull requests.
 
 ## About the Author
@@ -49,4 +51,4 @@ Contributions are welcome! Feel free to fork the repository, make improvements, 
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/f-fernandes/)!
 
-pr2
+bagdy1
